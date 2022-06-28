@@ -11,6 +11,9 @@ import {
 import config from "config";
 import { resolvers } from "./resolvers/index.resolver";
 import connectToDB from "./utils/connectio.db";
+import Context from "./types/context.type";
+import { verifyJwt } from "./utils/jwt.utils";
+import { User } from "./schema/user.schema";
 
 const bootstrap = async () => {
   const schema = await buildSchema({
@@ -23,8 +26,10 @@ const bootstrap = async () => {
 
   const server = new ApolloServer({
     schema,
-    context: (ctx) => {
-      // console.log(ctx);
+    context: (ctx: Context) => {
+      if (ctx.req.cookies.accessToken)
+        ctx.user = verifyJwt<User>(ctx.req.cookies.accessToken);
+
       return ctx;
     },
     plugins: [
