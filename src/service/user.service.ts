@@ -6,6 +6,9 @@ import Context from "../types/context.type";
 import { signJwt } from "../utils/jwt.utils";
 
 class UserService {
+  async findUser(user: string) {
+    return await UserModel.findById(user).lean();
+  }
   async login(input: LoginInput, context: Context) {
     const user = await UserModel.find().findByEmail(input.email).lean();
     if (!user) throw new ApolloError("Invalid email or password");

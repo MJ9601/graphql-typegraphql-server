@@ -14,11 +14,12 @@ import connectToDB from "./utils/connectio.db";
 import Context from "./types/context.type";
 import { verifyJwt } from "./utils/jwt.utils";
 import { User } from "./schema/user.schema";
+import authChecker from "./utils/authCheck";
 
 const bootstrap = async () => {
   const schema = await buildSchema({
     resolvers,
-    // authChecker,
+    authChecker,
   });
 
   const app = express();
